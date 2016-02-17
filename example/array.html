@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Microdata Template Example - Array</title>
+  <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <article>
+    <section></section>
+  </article>
+</main>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  var templater = new MicrodataTemplate({ info: 3 });
+  var templateElement = document.getElementsByTagName("SECTION")[0];
+
+  var fetch = function(endpoint, options, callback) {
+
+    var request = new XMLHttpRequest();
+    request.open("GET", endpoint, true);
+
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+
+        // Success!
+        if (!!callback && callback instanceof Function) {
+          callback(JSON.parse(request.responseText)||{});
+        }
+
+      } else {
+
+        // Error!
+        alert("Sorry, but this example was unable to fetch data. (see console for details)");
+        console.error(request.status, endpoint);
+
+      }
+    };
+
+    request.onerror = function() {
+      // There was a connection error of some sort
+      alert("Sorry, but this example must run in a hosted environment attached to the internet.");
+    };
+
+    request.send();
+  };
+
+  fetch("data/array.json", null, function(data){
+
+
+
+  });
+
+});
+</script>
+</body>
+</html>

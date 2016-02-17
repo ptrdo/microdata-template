@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Microdata Template Example - Collection</title>
+  <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    table {
+      width: 25%;
+      margin: 2em auto;
+      border: 1px solid silver;
+    }
+    table tr:nth-child(odd) {
+      background-color: #f4f4f0;
+    }
+    table td {
+      padding: 0.5em;
+    }
+    table td:nth-child(n+2) {
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <article>
+    <section>
+      <table>
+        <thead>
+        <tr>
+          <th>State</th>
+          <th>2000</th>
+          <th>2010</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr itemscope itemref="StatePopulations" itemid="{{ 3 }}" hidden>
+          <td itemprop="Name">{{ 2 }}</td>
+          <td itemprop="2000">{{ toLocaleString:0 }}</td>
+          <td itemprop="2010">{{ toLocaleString:1 }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+  </article>
+</main>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    var templater = new MicrodataTemplate({ info: 3 });
+    var templateHead = document.getElementsByTagName("THEAD")[0].getElementsByTagName("TR")[0];
+    var templateBody = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
+
+    var fetch = function(endpoint, options, callback) {
+
+      var request = new XMLHttpRequest();
+      request.open("GET", endpoint, true);
+
+      request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+
+          // Success!
+          if (!!callback && callback instanceof Function) {
+            callback(JSON.parse(request.responseText)||{});
+          }
+
+        } else {
+
+          // Error!
+          alert("Sorry, but this example was unable to fetch data. (see console for details)");
+          console.error(request.status, endpoint);
+
+        }
+      };
+
+      request.onerror = function() {
+        // There was a connection error of some sort
+        alert("Sorry, but this example must run in a hosted environment attached to the internet.");
+      };
+
+      request.send();
+    };
+
+    fetch("data/collection.json", null, function(data){
+
+      if ("StatePopulations" in data) {
+        templater.render(templateBody, data["StatePopulations"]);
+      }
+
+    });
+
+  });
+</script>
+</body>
+</html>
