@@ -5,57 +5,132 @@
   <title>Microdata Template Example - Array</title>
   <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
   <style>
-    body {
+    dl.menu {
+      position: relative;
+      width: 160px;
+      margin: 30px auto;
+      text-align: center;
       font-family: sans-serif;
+      z-index: 1;
+    }
+
+    dl.menu dt,
+    dl.menu dd {
+      width: 100%;
+      margin: -1px auto;
+      padding: 0;
+      border: 1px solid #369;
+      color: #69c;
+      cursor: pointer;
+    }
+
+    dl.menu dt {
+      position: relative;
+      background: #69c;
+      color: white;
+      z-index: 1;
+    }
+
+    dl.menu dt:hover {
+      background: #8be;
+      color: white;
+    }
+
+    dl.menu dt:active {
+      background: #369;
+      color: #69c;
+    }
+
+    dl.menu dd {
+      margin-top: -50px;
+      transition-property: margin-top;
+      transition-duration: 200ms;
+      transition-timing-function: ease-in;
+      background: white;
+      color: #69c;
+    }
+
+    dl.menu dd:hover {
+      background: #eed;
+      color: #369;
+    }
+
+    dl.menu dd:active {
+      background: #ccb;
+      color: black;
+    }
+
+    dl.menu:hover dd,
+    dl.menu.open dd {
+      margin-top: -1px;
+      transition-duration: 300ms;
+      transition-timing-function: ease-out;
+    }
+
+    dl.menu a {
+      display: inline-block;
+      width: inherit;
+      height: inherit;
+      padding: 15px 0;
+      text-decoration: none;
+      color: #c00;
+    }
+
+    dl.menu a:focus {
+      text-decoration: underline;
+      background: lightgoldenrodyellow;
+    }
+
+    dl.menu a:active {
+      background: #ccb;
+    }
+
+    dl.menu dt a,
+    dl.menu dt a:focus,
+    dl.menu dt a:active {
+      color: white;
+      background: #69c;
     }
   </style>
 </head>
 <body>
 <main>
-  <article>
-    <section></section>
-  </article>
+  <nav>
+    <dl class="menu" itemscope itemref="months" >
+      <dt><a href="#null">mois de l'année</a></dt>
+      <dd itemprop="name" itemid="{{ INDEX }}" hidden><a href="#null">{{ VALUE }}</a></dd>
+    </dl>
+  </nav>
 </main>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
   var templater = new MicrodataTemplate({ info: 3 });
-  var templateElement = document.getElementsByTagName("SECTION")[0];
+  var templateElement = document.getElementsByTagName("DD")[0];
 
-  var fetch = function(endpoint, options, callback) {
+  var months = [
+    "janvier",
+    "février",
+    "mars",
+    "avril",
+    "mai",
+    "juin",
+    "juillet",
+    "août",
+    "septembre",
+    "octobre",
+    "novembre",
+    "décembre"
+  ];
 
-    var request = new XMLHttpRequest();
-    request.open("GET", endpoint, true);
+  templater.render(templateElement, months);
 
-    request.onload = function() {
-      if (request.status >= 200 && request.status < 400) {
-
-        // Success!
-        if (!!callback && callback instanceof Function) {
-          callback(JSON.parse(request.responseText)||{});
-        }
-
-      } else {
-
-        // Error!
-        alert("Sorry, but this example was unable to fetch data. (see console for details)");
-        console.error(request.status, endpoint);
-
-      }
-    };
-
-    request.onerror = function() {
-      // There was a connection error of some sort
-      alert("Sorry, but this example must run in a hosted environment attached to the internet.");
-    };
-
-    request.send();
-  };
-
-  fetch("data/array.json", null, function(data){
-
-
-
+  document.getElementsByClassName("menu")[0].addEventListener("click", function(event) {
+    if (event.target.nodeName.toUpperCase() === "A") {
+      event.stopPropagation();
+      event.preventDefault();
+      alert("Month index: " + event.target.parentNode.getAttribute("itemid"));
+    }
   });
 
 });

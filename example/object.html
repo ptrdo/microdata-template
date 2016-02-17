@@ -6,56 +6,47 @@
   <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: monospace;
+    }
+    table {
+      margin: 3em;
+    }
+    table th,
+    table td {
+      padding: 0.5em;
+      border-bottom: 1px dotted silver;
+      text-align: left;
     }
   </style>
 </head>
 <body>
 <main>
   <article>
-    <section></section>
+    <section>
+      <table>
+        <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr itemscope itemref="window" itemid="{{ KEY }}" hidden>
+            <td itemprop="Key">{{ KEY }}</td>
+            <td itemprop="Value">{{ VALUE }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
   </article>
 </main>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
 
     var templater = new MicrodataTemplate({ info: 3 });
-    var templateElement = document.getElementsByTagName("SECTION")[0];
+    var templateElement = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
 
-    var fetch = function(endpoint, options, callback) {
-
-      var request = new XMLHttpRequest();
-      request.open("GET", endpoint, true);
-
-      request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
-
-          // Success!
-          if (!!callback && callback instanceof Function) {
-            callback(JSON.parse(request.responseText)||{});
-          }
-
-        } else {
-
-          // Error!
-          alert("Sorry, but this example was unable to fetch data. (see console for details)");
-          console.error(request.status, endpoint);
-
-        }
-      };
-
-      request.onerror = function() {
-        // There was a connection error of some sort
-        alert("Sorry, but this example must run in a hosted environment attached to the internet.");
-      };
-
-      request.send();
-    };
-
-    fetch("data/object.json", null, function(data){
-
-
-    });
+    templater.render(templateElement, window);
 
   });
 </script>
