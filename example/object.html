@@ -11,6 +11,9 @@
     table {
       margin: 3em;
     }
+    table tr:nth-child(odd) {
+      background-color: #f4f4f0;
+    }
     table th,
     table td {
       padding: 0.5em;
@@ -41,14 +44,14 @@
   </article>
 </main>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
 
-    var templater = new MicrodataTemplate({ info: 3 });
-    var templateElement = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
+  var templater = new MicrodataTemplate({ info: 3 });
+  var templateElement = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
 
-    templater.render(templateElement, window);
+  templater.render(templateElement, navigator, true);
 
-  });
+});
 </script>
 </body>
 </html>
