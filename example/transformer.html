@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Microdata Template Example - Transformer</title>
+  <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    section {
+      width: 36%;
+      margin: 3em auto;
+    }
+    blockquote {
+      padding: 8px;
+      border-bottom: 1px dotted orangered;
+      color: #0776A2;
+    }
+    blockquote:hover {
+      background-color: #eeeedd;
+    }
+    blockquote h5 {
+      margin: 0;
+    }
+    blockquote p {
+      margin: 1em;
+      font-size: larger;
+      line-height: 1.3;
+      color: black;
+    }
+    blockquote time {
+      display: inline-block;
+      width: 100%;
+      text-align: right;
+      font-size: smaller;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <article>
+    <section itemscope itemref="tweets">
+      <blockquote itemprop="tweet" itemid="{{ id }}" hidden>
+        <h5>@{{ concat:user.screen_name }} tweeted:</h5>
+        <p>{{ text }}</p>
+        <time datetime="{{ parseDateToTimeValue:created_at }}">{{ formatDate:created_at }}</time>
+      </blockquote>
+    </section>
+  </article>
+</main>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    var templater = new MicrodataTemplate({ info: 3 });
+    var templateElement = document.getElementsByTagName("BLOCKQUOTE")[0];
+
+    var ajax = function(endpoint, options, callback) {
+
+      var request = new XMLHttpRequest();
+      request.open("GET", endpoint, true);
+
+      request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+
+          // Success!
+          if (!!callback && callback instanceof Function) {
+            callback(JSON.parse(request.responseText)||{});
+          }
+
+        } else {
+
+          // Error!
+          alert("Sorry, but this example was unable to fetch data. (see console for details)");
+          console.error(request.status, endpoint);
+
+        }
+      };
+
+      request.onerror = function() {
+        // There was a connection error of some sort
+        alert("Sorry, but this example must run in a hosted environment attached to the internet.");
+      };
+
+      request.send();
+    };
+
+    ajax("data/transformer.json", null, function(data) {
+
+      templater.setTransformer("formatDate", function(value) {
+        var time = Date.parse(value);
+        var date = new Date(isNaN(time) ? isNaN(value) ? Date.now() : value : time);
+        return date.toLocaleString();
+      });
+
+      if (!!data) {
+        templater.render(templateElement, data);
+      }
+
+    });
+
+  });
+</script>
+</body>
+</html>

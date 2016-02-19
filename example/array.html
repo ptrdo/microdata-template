@@ -98,42 +98,42 @@
   <nav>
     <dl class="menu" itemscope itemref="months" >
       <dt><a href="#null">mois de l'année</a></dt>
-      <dd itemprop="name" itemid="{{ INDEX }}" hidden><a href="#null">{{ VALUE }}</a></dd>
+      <dd itemprop="month" itemid="{{ INDEX }}" hidden><a href="#null">{{ VALUE }}</a></dd>
     </dl>
   </nav>
 </main>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function() {
 
-  var templater = new MicrodataTemplate({ info: 3 });
-  var templateElement = document.getElementsByTagName("DD")[0];
+    var templater = new MicrodataTemplate({ info: 3 });
+    var templateElement = document.getElementsByTagName("DD")[0];
 
-  var months = [
-    "janvier",
-    "février",
-    "mars",
-    "avril",
-    "mai",
-    "juin",
-    "juillet",
-    "août",
-    "septembre",
-    "octobre",
-    "novembre",
-    "décembre"
-  ];
+    var months = [
+      "janvier",
+      "février",
+      "mars",
+      "avril",
+      "mai",
+      "juin",
+      "juillet",
+      "août",
+      "septembre",
+      "octobre",
+      "novembre",
+      "décembre"
+    ];
 
-  templater.render(templateElement, months);
+    templater.render(templateElement, months);
 
-  document.getElementsByClassName("menu")[0].addEventListener("click", function(event) {
-    if (event.target.nodeName.toUpperCase() === "A") {
-      event.stopPropagation();
-      event.preventDefault();
-      alert("Month index: " + event.target.parentNode.getAttribute("itemid"));
-    }
+    document.getElementsByClassName("menu")[0].addEventListener("click", function(event) {
+      if (event.target.nodeName.toUpperCase() === "A") {
+        event.stopPropagation();
+        event.preventDefault();
+        alert("Month index: " + event.target.parentNode.getAttribute("itemid"));
+      }
+    });
+
   });
-
-});
 </script>
 </body>
 </html>

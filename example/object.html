@@ -44,14 +44,14 @@
   </article>
 </main>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function() {
 
-  var templater = new MicrodataTemplate({ info: 3 });
-  var templateElement = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
+    var templater = new MicrodataTemplate({ info: 3 });
+    var templateElement = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
 
-  templater.render(templateElement, navigator, true);
+    templater.render(templateElement, navigator, true);
 
-});
+  });
 </script>
 </body>
 </html>
