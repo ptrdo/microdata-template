@@ -40,11 +40,11 @@
 <body>
 <main>
   <article>
-    <section itemscope itemref="tweets">
-      <blockquote itemprop="tweet" itemid="{{ id }}" hidden>
-        <h5>@{{ concat:user.screen_name }} tweeted:</h5>
-        <p>{{ text }}</p>
-        <time datetime="{{ parseDateToTimeValue:created_at }}">{{ formatDate:created_at }}</time>
+    <section>
+      <blockquote itemscope itemid="{{ id }}" itemtype="https://schema.org/UserTweets" hidden>
+        <h5 itemprop="screen_name">@{{ concat:user.screen_name }} tweeted:</h5>
+        <p itemprop="text">{{ text }}</p>
+        <time itemprop="created_at" datetime="{{ parseDateToTimeValue:created_at }}">{{ formatDate:created_at }}</time>
       </blockquote>
     </section>
   </article>
