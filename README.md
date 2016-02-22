@@ -1,11 +1,9 @@
 # microdata-template
 An implementation of HTML template by way of the microdata mechanism.
-### The Gist
-When displaying information in an HTML page, it sometimes makes sense for a script to loop over a set of data to extract its values and embed them into a repeatable pattern of markup. This sort of routine is what can easily populate the many rows and columns of a complex `<table>` of data, but is also convenient for rendering more pedestrian page elements like `<menu>` and `<select><option>` lists. Of course, this is nothing new and many JavaScript frameworks and libraries provide for exactly this sort of routine as core to their technology, but standard HTML provides for this as well with the `<template>` element. Even more, HTML has long-supported a special set of [microdata](https://www.w3.org/TR/microdata/) attributes designed to make such rendered information more comprehensible to the machine-reading done by search engine crawlers and the like. 
-  
-This **microdata-template** module is essentially a simple set of routines that should provide just enough functionality to stay true to the intent of the HTML recommendations for `<template>` and `microdata` without the learning curve, investment, and risk that can be incurred when adopting third-party solutions. Also, since `<template>` and `microdata` are variably implemented by modern browsers, this module serves as a [polyfill](https://en.wikipedia.org/wiki/Polyfill) to assure reliable results. Best of all, this methodology encourages the writing of low-dependency JavaScript and perfectly valid HTML &mdash; even within fully-functional templated markup. 
+### The Gist  
+This JavaScript module should simplify adding dynamic content to HTML documents while staying true to the recommendations of web standards. There are no dependencies here except the JavaScript [ECMA5 standard](http://www.ecma-international.org/ecma-262/5.1/) which enjoys [nearly universal support](http://kangax.github.io/compat-table/es5/) in modern browsers. Also, since the HTML recommendations for integral technologies such as [template](https://www.w3.org/TR/html5/scripting-1.html#the-template-element) and [microdata](https://www.w3.org/TR/microdata/) are variably implemented by modern browsers, this module serves as a [polyfill](https://en.wikipedia.org/wiki/Polyfill) to assure reliable results. Best of all, this methodology encourages the writing of low-dependency JavaScript and perfectly valid HTML &mdash; even within fully-functional templated markup. 
 ### Simple Usage
-In the HTML document, simply load MicrodataTemplate to the global namespace and then instantiate when ready: 
+**1:** In the HTML document, simply load the module and instantiate when ready: 
 ```html
 <script src="./lib/micro-data.js"></script>
 <script>
@@ -15,6 +13,68 @@ In the HTML document, simply load MicrodataTemplate to the global namespace and 
 </script>
 ```
 
+**2:** Write some HTML with a template element (or any node designated with both the `hidden` and `itemscope` attributes): 
+```html
+<nav>
+  <menu id="example">
+    <li hidden itemscope>
+      <a itemprop="url" href="{{ Url }}">
+        <span itemprop="name">{{ Name }}</span>
+      </a>
+    </li>
+  </menu>
+</nav>
+```
+
+
+**3:** In JavaScript, create a corresponding set of data and then render it (note that the designated element can be an outer scope): 
+```javascript
+var data = [{ 
+    "Name": "Home", 
+    "Url": "/home"
+  }, {
+    "Name": "About", 
+    "Url": "/about"
+}];
+
+var templater = new MicrodataTemplate();
+    templater.render(document.getElementById("example"), data); 
+```
+
+
+**4:** The resulting HTML will look like this (the template source persists for future use but remains hidden): 
+```html
+<nav>
+  <menu>
+    <li hidden itemscope>
+      <a itemprop="url" href="{{ Url }}">
+        <span itemprop="name">{{ Name }}</span>
+      </a>
+    </li>
+    <li itemscope>
+      <a itemprop="url" href="/home"><span itemprop="name">Home</span></a>
+    </li>
+    <li itemscope>
+      <a itemprop="url" href="/about"><span itemprop="name">About</span></a>
+    </li>
+  </menu>
+</nav>
+```
+
+
+**Note:** The example above is simplified for clarity, but more compliant microdata could look like this: 
+```html
+<nav>
+  <menu itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li hidden itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
+      <a itemprop="url" href="{{ Url }}">
+        <span itemprop="name">{{ Name }}</span>
+      </a>
+    </li>
+  </menu>
+</nav>
+```
+### Advanced Usage
 Alternatively, the module can be assigned to a discrete namespace: 
 ```html
 <script>
@@ -29,62 +89,10 @@ Alternatively, the module can be assigned to a discrete namespace:
 </script>
 ```
 
-Write some HTML with an inline template element (designated by the `hidden itemscope` attributes): 
-```html
-<menu id="example">
-  <li hidden itemscope>
-    <a itemprop="url" href="{{ Url }}">
-      <span itemprop="name">{{ Name }}</span>
-    </a>
-  </li>
-</menu>
-```
 
-Create a corresponding set of data and then render it: 
-```javascript
-var data = [{ 
-    "Name": "Home", 
-    "Url": "/home"
-  }, {
-    "Name": "About", 
-    "Url": "/about"
-}];
+### The Whole Spiel
+When displaying information in an HTML page, it sometimes makes sense for a script to loop over a set of data to extract its values and embed them into a repeatable pattern of markup. This sort of routine is what can easily populate the many rows and columns of a complex `<table>` of data, but is also convenient for rendering more pedestrian page elements like `<menu>` and `<select><option>` lists. Of course, this is nothing new and many JavaScript frameworks and libraries provide for exactly this sort of routine as core to their technology, but standard HTML provides for this as well with the `<template>` element. Even more, HTML has long-supported a special set of [microdata](https://www.w3.org/TR/microdata/) attributes designed to make such rendered information more comprehensible to the machine-reading done by search engine crawlers and the like. 
 
-var templater = new MicrodataTemplate();
-    templater.render(document.getElementById("example"), data); 
-```
-
-The resulting HTML will look like this: 
-```html
-<menu>
-  <li hidden itemscope>
-    <a itemprop="url" href="{{ Url }}">
-      <span itemprop="name">{{ Name }}</span>
-    </a>
-  </li>
-  <li itemscope>
-    <a itemprop="url" href="/home"><span itemprop="name">Home</span></a>
-  </li>
-  <li itemscope>
-    <a itemprop="url" href="/about"><span itemprop="name">About</span></a>
-  </li>
-</menu>
-```
-
-Of course, above is a very simple example. More compliant microdata could look like this: 
-```html
-<nav>
-  <menu itemscope itemtype="http://schema.org/BreadcrumbList">
-    <li hidden itemscope itemprop="itemListElement" itemtype="http://schema.org/ListItem">
-      <a itemprop="url" href="{{ Url }}">
-        <span itemprop="name">{{ Name }}</span>
-      </a>
-    </li>
-  </menu>
-</nav>
-```
-
-### The Argument
 The [HTML5 Recommendations](https://www.w3.org/TR/html5/scripting-1.html#the-template-element) designate the `<template>` element as a hidden node containing some fragment of markup. That markup is intended as the source structure for a script to clone and then customize and deposit elsewhere in the HTML document. An advantage of this technology is that HTML structures can be plainly constructed in manifest markup rather than assembled on-the-fly from within the logic of a script. This can be especially advantagous when the resulting assembly is deep or elaborate. WebPlatform.org has a concise explanation of [how to employ the standard template element](https://docs.webplatform.org/wiki/html/elements/template).
 
 **Unfortunately**, even though the `<template>` element is a specified recommendation of HTML5, it is not fully supported in all popular browsers (as of this writing), so certain accommodations must be made, especially to assure that the browser recognizes `template` as a valid node name and that its content should not be rendered by default. These accommodations can be made quite simply by declaring an appropriate namespace in the HTML and CSS documents (at least `http://www.w3.org/1999/xhtml`), and by also declaring the CSS rule: `template { display: none; }`. Alternatively, the [hidden attribute](http://caniuse.com/#search=hidden) can be added for super-duper assurance in most every browser: `<template hidden></template>`.  
