@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Microdata Template Example - Advanced</title>
+  <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: monospace;
+    }
+    table {
+      margin: 3em;
+    }
+    table tr:nth-child(odd) {
+      background-color: #f4f4f0;
+    }
+    table th,
+    table td {
+      padding: 0.5em;
+      border-bottom: 1px dotted silver;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <article>
+    <section>
+      <table>
+        <thead>
+        <tr>
+          <th itemscope itemref="heads" itemid="{{ INDEX }}" hidden>{{ quote:VALUE }}</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr itemscope itemref="window" itemid="{{ KEY }}" hidden>
+            <td itemprop="Key">{{ quote:KEY }}</td>
+            <td itemprop="Value">{{ VALUE }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </article>
+</main>
+<script>
+// document.addEventListener("DOMContentLoaded", function() {
+
+    var templater1 = MicrodataTemplate(); // Multi-instance is new MicrodataTemplate(options); For singleton, not new;
+    var templater2 = MicrodataTemplate();
+
+    var templateHead = document.getElementsByTagName("THEAD")[0].getElementsByTagName("TH")[0];
+    var templateBody = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
+
+
+    var heads = ["Key", "Value"];
+
+
+    templater1.setTransformer("quote", function(value) {
+      return '"' + value + '"';
+    });
+
+
+    templater1.render(templateHead, heads);
+    templater2.render(templateBody, navigator, true);
+
+// });
+</script>
+</body>
+</html>
