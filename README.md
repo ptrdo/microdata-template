@@ -5,7 +5,7 @@ This JavaScript module should simplify adding dynamic content to HTML documents 
 ### Simple Usage
 **1:** In the HTML document, simply load the module and instantiate when ready: 
 ```html
-<script src="./lib/micro-data.js"></script>
+<script src="./lib/microdata-template.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     var templater = new MicrodataTemplate();
@@ -81,7 +81,7 @@ Alternatively, the module can be assigned to a discrete namespace:
   this.PTRDO = { utils: {} };
   this.exports = PTRDO.utils;
 </script>
-<script src="./lib/micro-data.js"></script>
+<script src="./lib/microdata-template.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     var templater = new PTRDO.utils.MicrodataTemplate();
