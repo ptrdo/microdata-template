@@ -29,13 +29,13 @@
       <table>
         <thead>
         <tr>
-          <th itemscope itemref="heads" itemid="{{ INDEX }}" hidden>{{ quote:VALUE }}</th>
+          <th itemscope itemref="heads" itemid="{{ INDEX }}" hidden>{{ VALUE }}</th>
         </tr>
         </thead>
         <tbody>
-          <tr itemscope itemref="window" itemid="{{ KEY }}" hidden>
-            <td itemprop="Key">{{ quote:KEY }}</td>
-            <td itemprop="Value">{{ VALUE }}</td>
+          <tr itemscope itemref="{{ forin:guts }}" itemid="{{ KEY }}" hidden>
+            <td itemprop="Key">{{ KEY }}</td>
+            <td itemprop="Value">{{ quoteIfString:VALUE }}</td>
           </tr>
         </tbody>
       </table>
@@ -54,14 +54,20 @@
 
     var heads = ["Key", "Value"];
 
+    var guts = {
+      foo: "bar",
+      now: Date.now()
+    };
 
-    templater1.setTransformer("quote", function(value) {
-      return '"' + value + '"';
+
+
+    templater1.setTransformer("quoteIfString", function(value) {
+      return /^-?\d+\.?\d*$/.test(value) ? value : '"' + value + '"';
     });
 
 
     templater1.render(templateHead, heads);
-    templater2.render(templateBody, navigator, true);
+    templater2.refresh(templateBody, {guts:guts});
 
 // });
 </script>
