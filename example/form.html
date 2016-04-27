@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Microdata Template Example - Form</title>
+  <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: monospace;
+    }
+    form {
+      margin: 3em;
+    }
+    fieldset {
+      border: none;
+    }
+    label {
+      display: inline-block;
+      padding: 0 1em;
+      min-width: 6em;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <article>
+    <section>
+      <form>
+        <fieldset><label>Name</label><input type="text" value="{{ Name }}" disabled="{{ boolean:Verified }}" /></fieldset>
+        <fieldset>
+          <label>Province</label>
+          <select>
+            <option value="{{ INDEX }}" selected="{{ boolean:isResidence:VALUE }}" itemref="Province" itemscope hidden>{{ VALUE }}</option>
+          </select>
+        </fieldset>
+        <fieldset><label><input type="checkbox" checked="{{ boolean:isCanadian:Citizenship }}" disabled="{{ boolean:Verified }}"/>Canadian</label></fieldset>
+      </form>
+    </section>
+  </article>
+</main>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    var templater = new MicrodataTemplate();
+    var templateElement = document.getElementsByTagName("FORM")[0];
+
+    var info = {
+      "Name": "Alex Trebek",
+      "Verified": true,
+      "Citizenship": "Canada",
+      "Residence": "Nova Scotia",
+      "Province": [
+        "Ontario",
+        "Quebec",
+        "Nova Scotia",
+        "New Brunswick",
+        "Manitoba",
+        "British Columbia",
+        "Prince Edward Island",
+        "Saskatchewan",
+        "Alberta",
+        "Newfoundland and Labrador"
+      ]
+    };
+
+    templater.setTransformer("isResidence", function(value, index) {
+      return value == info.Residence;
+    });
+
+    templater.setTransformer("isCanadian", function(value, index) {
+      return /canada/i.test(value);
+    });
+
+    templater.render(templateElement, info);
+
+  });
+</script>
+</body>
+</html>

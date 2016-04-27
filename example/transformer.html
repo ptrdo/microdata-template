@@ -87,7 +87,7 @@
 
     ajax("data/transformer.json", null, function(data) {
 
-      templater.setTransformer("formatDate", function(value) {
+      templater.setTransformer("formatDate", function(value, index) {
         var time = Date.parse(value);
         var date = new Date(isNaN(time) ? isNaN(value) ? Date.now() : value : time);
         return date.toLocaleString();
