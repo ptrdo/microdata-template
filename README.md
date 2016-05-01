@@ -1,3 +1,4 @@
+#### This is pre-release software. Use at your own risk. 
 # microdata-template
 An implementation of HTML template by way of the microdata mechanism.
 ### The Gist  
