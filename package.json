@@ -1,0 +1,14 @@
+{
+  "name": "microdata-template",
+  "version": "1.0.1",
+  "description": "An implementation of HTML template by way of the microdata mechanism..",
+  "keywords": ["javascript", "template", "microdata", "ECMA5"],
+  "bugs": "https://github.com/ptrdo/microdata-template/issues",
+  "main": "lib/microdata-template.js",
+  "repository": {
+    "url": "https://github.com/ptrdo/microdata-template",
+    "type": "git"
+  },
+  "author": "Peter Sylwester <ptrdo@users.noreply.github.com>",
+  "license": "MIT"
+}
