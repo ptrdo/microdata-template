@@ -43,33 +43,34 @@
   </article>
 </main>
 <script>
-// document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
 
-    var templater1 = MicrodataTemplate(); // Multi-instance is new MicrodataTemplate(options); For singleton, not new;
-    var templater2 = MicrodataTemplate();
+  // This code will use the sample data here to draw two aspects of a table.
+  // Run this in a browser, and be sure to view the rendered source!
 
-    var templateHead = document.getElementsByTagName("THEAD")[0].getElementsByTagName("TH")[0];
-    var templateBody = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
+  // Factory: instance = new MicrodataTemplate(options);
+  // Singleton: instance = MicrodataTemplate(options);
+  var templater1 = MicrodataTemplate();
+  var templater2 = MicrodataTemplate();
 
+  var templateHead = document.getElementsByTagName("THEAD")[0].getElementsByTagName("TH")[0];
+  var templateBody = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
 
-    var heads = ["Key", "Value"];
+  var heads = ["Key", "Value"];
 
-    var guts = {
-      foo: "bar",
-      now: Date.now()
-    };
+  var guts = {
+    foo: "bar",
+    now: Date.now()
+  };
 
+  templater1.setTransformer("quoteIfString", function(value) {
+    return /^-?\d+\.?\d*$/.test(value) ? value : '"' + value + '"';
+  });
 
+  templater1.render(templateHead, heads);
+  templater2.refresh(templateBody, {guts:guts});
 
-    templater1.setTransformer("quoteIfString", function(value) {
-      return /^-?\d+\.?\d*$/.test(value) ? value : '"' + value + '"';
-    });
-
-
-    templater1.render(templateHead, heads);
-    templater2.refresh(templateBody, {guts:guts});
-
-// });
+});
 </script>
 </body>
 </html>

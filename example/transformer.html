@@ -52,6 +52,10 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
 
+    // This code will load an adjacent data file and use it to draw a series of tweets.
+    // Also, a custom transformer is employed for special formatting of date values.
+    // Run this in a browser, and be sure to view the rendered source!
+
     var templater = new MicrodataTemplate({ info: 3 });
     var templateElement = document.getElementsByTagName("BLOCKQUOTE")[0];
 

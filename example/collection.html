@@ -37,7 +37,9 @@
         </tr>
         </thead>
         <tbody>
+        <!–– This TR node is configured to iterate over the "StatePopulations" object. -->
         <tr itemscope itemref="StatePopulations" itemid="{{ 3 }}" hidden>
+          <!–– The inserted values are derived from the array index found at each iteration. -->
           <td itemprop="Name">{{ 2 }}</td>
           <td itemprop="2000">{{ toLocaleString:0 }}</td>
           <td itemprop="2010">{{ toLocaleString:1 }}</td>
@@ -49,6 +51,9 @@
 </main>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+
+    // This code will load an adjacent data file and use it to draw a table.
+    // Run this in a browser, and be sure to view the rendered source!
 
     var templater = new MicrodataTemplate({ info: 3 });
     var templateBody = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];

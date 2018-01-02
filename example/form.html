@@ -25,7 +25,7 @@
 <main>
   <article>
     <section>
-      <form>
+      <form itemscope hidden>
         <fieldset><label>Name</label><input type="text" value="{{ Name }}" disabled="{{ boolean:Verified }}" /></fieldset>
         <fieldset>
           <label>Province</label>
@@ -40,6 +40,9 @@
 </main>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+
+    // This code will use the data provided here to populate a form.
+    // Run this in a browser, and be sure to view the rendered source!
 
     var templater = new MicrodataTemplate();
     var templateElement = document.getElementsByTagName("FORM")[0];
@@ -64,6 +67,7 @@
     };
 
     templater.setTransformer("isResidence", function(value, index) {
+      // console.log("isResidence", value, index);
       return value == info.Residence;
     });
 
