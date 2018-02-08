@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Microdata Template: Example: Webpack Implementation</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    table {
+      width: 25%;
+      margin: 2em auto;
+      border: 1px solid silver;
+    }
+    table tr:nth-child(odd) {
+      background-color: #f4f4f0;
+    }
+    table td {
+      padding: 0.5em;
+    }
+    table td:nth-child(n+2) {
+      text-align: right;
+    }
+  </style>
+  <script src="bundle.js"></script>
+</head>
+<body>
+  <main id="app">
+    <article>
+      <section>
+        <table>
+          <thead>
+          <tr>
+            <th>State</th>
+            <th>2000</th>
+            <th>2010</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!–– This TR node is configured to iterate over the "StatePopulations" object. -->
+          <tr itemscope itemref="StatePopulations" itemid="{{ 3 }}" hidden>
+            <!–– The inserted values are derived from the array index found at each iteration. -->
+            <td itemprop="Name">{{ 2 }}</td>
+            <td itemprop="2000">{{ toLocaleString:0 }}</td>
+            <td itemprop="2010">{{ toLocaleString:1 }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

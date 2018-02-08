@@ -1,0 +1,12 @@
+{
+  "name": "minimal-requirejs",
+  "version": "0.1.0",
+  "description": "an example implementation of microdata-template",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "requirejs": "^2.3.5",
+    "requirejs-json": "^0.0.3",
+    "requirejs-text": "^2.0.15"
+  }
+}

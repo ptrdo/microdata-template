@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Microdata Template Example - Advanced</title>
+  <title>Microdata Template: Example: Multiple Renders</title>
   <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
   <style>
     body {
@@ -48,11 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // This code will use the sample data here to draw two aspects of a table.
   // Run this in a browser, and be sure to view the rendered source!
 
-  // Factory: instance = new MicrodataTemplate(options);
-  // Singleton: instance = MicrodataTemplate(options);
-  var templater1 = MicrodataTemplate();
-  var templater2 = MicrodataTemplate();
-
+  var templater = window.MicrodataTemplate;
   var templateHead = document.getElementsByTagName("THEAD")[0].getElementsByTagName("TH")[0];
   var templateBody = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
 
@@ -63,12 +59,12 @@ document.addEventListener("DOMContentLoaded", function() {
     now: Date.now()
   };
 
-  templater1.setTransformer("quoteIfString", function(value) {
+  templater.setTransformer("quoteIfString", function(value) {
     return /^-?\d+\.?\d*$/.test(value) ? value : '"' + value + '"';
   });
 
-  templater1.render(templateHead, heads);
-  templater2.refresh(templateBody, {guts:guts});
+  templater.render(templateHead, heads);
+  templater.refresh(templateBody, { guts:guts });
 
 });
 </script>

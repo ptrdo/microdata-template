@@ -3,6 +3,8 @@
 An implementation of HTML template by way of the microdata mechanism.
 ### The Gist  
 This JavaScript module should simplify adding dynamic content to HTML documents while staying true to the recommendations of web standards. There are no dependencies here except the JavaScript [ECMA5 standard](http://www.ecma-international.org/ecma-262/5.1/) which enjoys [nearly universal support](http://kangax.github.io/compat-table/es5/) in modern browsers. Also, since the HTML recommendations for integral technologies such as [template](https://www.w3.org/TR/html52/semantics-scripting.html#the-template-element) and [microdata](https://www.w3.org/TR/microdata/) are variably implemented by modern browsers, this module serves as a [polyfill](https://en.wikipedia.org/wiki/Polyfill) to assure reliable results. Best of all, this methodology encourages the writing of low-dependency JavaScript and perfectly valid HTML &mdash; even within fully-functional templated markup.
+
+***
 ### Simple Usage
 **1:** In the HTML document, simply load the module and instantiate when ready: 
 ```html
@@ -27,7 +29,6 @@ This JavaScript module should simplify adding dynamic content to HTML documents 
 </nav>
 ```
 
-
 **3:** In JavaScript, create a corresponding set of data and then render it (note that the designated element can be an outer scope): 
 ```javascript
 var data = [{ 
@@ -41,7 +42,6 @@ var data = [{
 var templater = new MicrodataTemplate();
     templater.render(document.getElementById("example"), data); 
 ```
-
 
 **4:** The resulting HTML will look like this (the template source persists for future use but remains hidden): 
 ```html
@@ -62,7 +62,6 @@ var templater = new MicrodataTemplate();
 </nav>
 ```
 
-
 **Note:** The example above is simplified for clarity, but more compliant microdata could look like this: 
 ```html
 <nav>
@@ -75,6 +74,8 @@ var templater = new MicrodataTemplate();
   </menu>
 </nav>
 ```
+
+***
 ### Advanced Usage
 Alternatively, the module can be assigned to a discrete namespace: 
 ```html
@@ -89,8 +90,41 @@ Alternatively, the module can be assigned to a discrete namespace:
   });
 </script>
 ```
+This module is organized to be attached to an HTML document as a simple external script, but also in a project governed by [Asynchronous Module Definition](https://en.wikipedia.org/wiki/Asynchronous_module_definition) (AMD) with a library such as [RequireJS](https://github.com/requirejs/requirejs), or a [CommonJS](https://en.wikipedia.org/wiki/CommonJS) project governed by a framework such as [NodeJS](https://en.wikipedia.org/wiki/Node.js). The expectations are the same, but the syntax used to load, instantiate, and then address the module will be as a local reference rather than a window namespace.
 
+**AMD (RequireJS) Implementation:**
+```javascript
+require.config({
+   paths: { auth: "/path/to/idmorg-auth"},
+   shim: { auth: { exports: "auth" }}
+});
 
+define(["auth"], function(Auth) {
+    Auth.init({
+        applicationName: "SomeAppName",
+        endpoint: "https://comps-dev.idmod.org/api/",
+        parentElement: someDOMElement
+    });
+
+    Auth.signout();
+});
+```
+**CommonJS (NodeJS) Implementation:**
+```javascript
+import Auth from "path/to/idmorg-auth.js";
+
+$(function() {
+    Auth.init({
+        applicationName: "SomeAppName",
+        endpoint: "https://comps-dev.idmod.org/api/",
+        parentElement: someDOMElement
+    });
+
+    Auth.signout();
+});
+```
+
+***
 ### The Whole Spiel
 When displaying information in an HTML page, it sometimes makes sense for a script to loop over a set of data to extract its values and embed them into a repeatable pattern of markup. This sort of routine is what can easily populate the many rows and columns of a complex `<table>` of data, but is also convenient for rendering more pedestrian page elements like `<menu>` and `<select><option>` lists. Of course, this is nothing new and many JavaScript frameworks and libraries provide for exactly this sort of routine as core to their technology, but standard HTML provides for this as well with the `<template>` element. Even more, HTML has long-supported a special set of [microdata](https://www.w3.org/TR/microdata/) attributes designed to make such rendered information more comprehensible to the machine-reading done by search engine crawlers and the like. 
 

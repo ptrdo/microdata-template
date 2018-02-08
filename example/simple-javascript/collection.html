@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Microdata Template Example - Collection</title>
-  <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
+  <title>Microdata Template: Example: Collection Source</title>
+  <script src="../../lib/microdata-template.js" crossorigin="anonymous"></script>
   <style>
     body {
       font-family: sans-serif;
@@ -55,7 +55,7 @@
     // This code will load an adjacent data file and use it to draw a table.
     // Run this in a browser, and be sure to view the rendered source!
 
-    var templater = new MicrodataTemplate({ info: 3 });
+    var templater = window.MicrodataTemplate;
     var templateBody = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
 
     var ajax = function(endpoint, options, callback) {

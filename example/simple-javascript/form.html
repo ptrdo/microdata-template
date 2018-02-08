@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Microdata Template Example - Form</title>
-  <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
+  <title>Microdata Template: Example: Form Construction</title>
+  <script src="../../lib/microdata-template.js" crossorigin="anonymous"></script>
   <style>
     body {
       font-family: monospace;
@@ -44,7 +44,7 @@
     // This code will use the data provided here to populate a form.
     // Run this in a browser, and be sure to view the rendered source!
 
-    var templater = new MicrodataTemplate();
+    var templater = window.MicrodataTemplate;
     var templateElement = document.getElementsByTagName("FORM")[0];
 
     var info = {

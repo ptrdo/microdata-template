@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Microdata Template Example - Object</title>
-  <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
+  <title>Microdata Template: Example: Object Source</title>
+  <script src="../../lib/microdata-template.js" crossorigin="anonymous"></script>
   <style>
     body {
       font-family: monospace;
@@ -49,7 +49,7 @@
     // This code will access the browser's navigator object and use it to draw a table.
     // Run this in a browser, and be sure to view the rendered source!
 
-    var templater = new MicrodataTemplate({ info: 3 });
+    var templater = window.MicrodataTemplate;
     var templateElement = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
 
     templater.getSetShowHeritage(true);
