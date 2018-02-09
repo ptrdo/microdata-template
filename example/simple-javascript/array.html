@@ -108,8 +108,8 @@
     // This code will use the data provided here to populate a form.
     // Run this in a browser, and be sure to view the rendered source!
 
-    var templater = window.MicrodataTemplate;
-    var templateElement = document.getElementsByTagName("DD")[0];
+    var templater = window.MicrodataTemplate.init();
+    var templateElement = document.querySelector("DD[hidden]");
 
     var months = [
       "janvier",

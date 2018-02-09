@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Microdata Template: Example: Multiple Renders</title>
-  <script src="../lib/microdata-template.js" crossorigin="anonymous"></script>
+  <script src="../../lib/microdata-template.js" crossorigin="anonymous"></script>
   <style>
     body {
       font-family: monospace;
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // This code will use the sample data here to draw two aspects of a table.
   // Run this in a browser, and be sure to view the rendered source!
 
-  var templater = window.MicrodataTemplate;
+  var templater = window.MicrodataTemplate.init();
   var templateHead = document.getElementsByTagName("THEAD")[0].getElementsByTagName("TH")[0];
   var templateBody = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
 

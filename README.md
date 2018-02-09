@@ -1,5 +1,5 @@
-#### This is pre-release software. Use at your own risk. 
-# microdata-template
+###### This is released software. Please **[log issues](https://github.com/ptrdo/microdata-template/issues)** found. 
+# microdata-template `v2.0.0`
 An implementation of HTML template by way of the microdata mechanism.
 ### The Gist  
 This JavaScript module should simplify adding dynamic content to HTML documents while staying true to the recommendations of web standards. There are no dependencies here except the JavaScript [ECMA5 standard](http://www.ecma-international.org/ecma-262/5.1/) which enjoys [nearly universal support](http://kangax.github.io/compat-table/es5/) in modern browsers. Also, since the HTML recommendations for integral technologies such as [template](https://www.w3.org/TR/html52/semantics-scripting.html#the-template-element) and [microdata](https://www.w3.org/TR/microdata/) are variably implemented by modern browsers, this module serves as a [polyfill](https://en.wikipedia.org/wiki/Polyfill) to assure reliable results. Best of all, this methodology encourages the writing of low-dependency JavaScript and perfectly valid HTML &mdash; even within fully-functional templated markup.
@@ -11,7 +11,8 @@ This JavaScript module should simplify adding dynamic content to HTML documents 
 <script src="./lib/microdata-template.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    var templater = new MicrodataTemplate();
+    var templater = window.MicrodataTemplate.init();
+    console.log("MicrodataTemplate!", templater.getVersion());
   });
 </script>
 ```
@@ -39,7 +40,7 @@ var data = [{
     "Url": "/about"
 }];
 
-var templater = new MicrodataTemplate();
+var templater = window.MicrodataTemplate.init();
     templater.render(document.getElementById("example"), data); 
 ```
 
@@ -77,51 +78,43 @@ var templater = new MicrodataTemplate();
 
 ***
 ### Advanced Usage
-Alternatively, the module can be assigned to a discrete namespace: 
-```html
-<script>
-  this.PTRDO = { utils: {} };
-  this.exports = PTRDO.utils;
-</script>
-<script src="./lib/microdata-template.js"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var templater = new PTRDO.utils.MicrodataTemplate();
-  });
-</script>
-```
-This module is organized to be attached to an HTML document as a simple external script, but also in a project governed by [Asynchronous Module Definition](https://en.wikipedia.org/wiki/Asynchronous_module_definition) (AMD) with a library such as [RequireJS](https://github.com/requirejs/requirejs), or a [CommonJS](https://en.wikipedia.org/wiki/CommonJS) project governed by a framework such as [NodeJS](https://en.wikipedia.org/wiki/Node.js). The expectations are the same, but the syntax used to load, instantiate, and then address the module will be as a local reference rather than a window namespace.
+This module is organized to be attached to an HTML document as a simple external script (see: [Simple Usage](https://github.com/ptrdo/microdata-template#simple-usage)), but also in a project governed by [Asynchronous Module Definition](https://en.wikipedia.org/wiki/Asynchronous_module_definition) (AMD) with a library such as [RequireJS](https://github.com/requirejs/requirejs), or an [ES6-compliant](http://es6-features.org/) project bundled by a library such as [Webpack](https://webpack.js.org/). The expectations are the same, but the syntax used to load, instantiate, and then address the module may be slightly different depending on circumstance.
 
-**AMD (RequireJS) Implementation:**
+**Old-fashioned AMD (RequireJS) Implementation:**
 ```javascript
 require.config({
-   paths: { auth: "/path/to/idmorg-auth"},
-   shim: { auth: { exports: "auth" }}
+  paths: {
+    text: "./node_modules/requirejs-text/text",
+    json: "./node_modules/requirejs-json/json",
+  }
 });
-
-define(["auth"], function(Auth) {
-    Auth.init({
-        applicationName: "SomeAppName",
-        endpoint: "https://comps-dev.idmod.org/api/",
-        parentElement: someDOMElement
-    });
-
-    Auth.signout();
+define(
+[
+  "./path/to/microdata-template.js",
+  "json!./path/to/collection.json"
+],
+function(templater, collection) {
+  
+  var render = function(rootElement) {
+    var templateElement = rootElement.querySelector("TR[itemscope]");
+    templater.render(templateElement, collection);
+  }
 });
 ```
-**CommonJS (NodeJS) Implementation:**
+**New-fangled ES6 Module Implementation:**
 ```javascript
-import Auth from "path/to/idmorg-auth.js";
+import templater from "./path/to/microdata-template.js";
+import collection from "./path/to/data/collection.json";
 
-$(function() {
-    Auth.init({
-        applicationName: "SomeAppName",
-        endpoint: "https://comps-dev.idmod.org/api/",
-        parentElement: someDOMElement
-    });
+class Example {
+  
+  render(rootElement=document) {
+    let templateElement = rootElement.querySelector("TR[itemscope]");
+    templater.render(templateElement, collection);
+  };
+}
 
-    Auth.signout();
-});
+export default Example;
 ```
 
 ***

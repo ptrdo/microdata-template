@@ -55,7 +55,7 @@
     // This code will load an adjacent data file and use it to draw a table.
     // Run this in a browser, and be sure to view the rendered source!
 
-    var templater = window.MicrodataTemplate;
+    var templater = window.MicrodataTemplate.init();
     var templateBody = document.getElementsByTagName("TBODY")[0].getElementsByTagName("TR")[0];
 
     var ajax = function(endpoint, options, callback) {
@@ -88,7 +88,7 @@
       request.send();
     };
 
-    ajax("data/collection.json", null, function(data){
+    ajax("../data/collection.json", null, function(data){
 
       if ("StatePopulations" in data) {
         templater.render(templateBody, data["StatePopulations"]);

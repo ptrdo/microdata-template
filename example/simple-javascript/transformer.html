@@ -56,7 +56,7 @@
     // Also, a custom transformer is employed for special formatting of date values.
     // Run this in a browser, and be sure to view the rendered source!
 
-    var templater = window.MicrodataTemplate;
+    var templater = window.MicrodataTemplate.init();
     var templateElement = document.getElementsByTagName("BLOCKQUOTE")[0];
 
     var ajax = function(endpoint, options, callback) {
@@ -89,7 +89,7 @@
       request.send();
     };
 
-    ajax("data/transformer.json", null, function(data) {
+    ajax("../data/transformer.json", null, function(data) {
 
       templater.setTransformer("formatDate", function(value, index) {
         var time = Date.parse(value);
