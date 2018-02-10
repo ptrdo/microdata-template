@@ -20,7 +20,7 @@ This example demonstrates integration into a minimal [Asynchronous Module Defini
 ```sh
 > yarn install
 ```
-**3:** The file to run is `\minimal-requirejs\www\index.html`. A `localhost` or other webserver will be required for the page to import all runtime components and then render without error. One convenient means is use an Integrated Development Environment (IDE) such as JetBrain's [WebStorm](https://www.jetbrains.com/webstorm/) or [IntelliJ](https://www.jetbrains.com/idea/) which can open these files for review and edit and then run them in its internal webserver. 
+**3:** The file to run is `\minimal-requirejs\www\index.html`. A `localhost` or other webserver will be required for the page to import all runtime components and then render without error. One convenient means is use of an Integrated Development Environment (IDE) such as JetBrain's [WebStorm](https://www.jetbrains.com/webstorm/) or [IntelliJ](https://www.jetbrains.com/idea/) which can open these files for review and edit and then run them in its internal webserver. 
 
 ***
 ### minimal-webpack
@@ -42,4 +42,4 @@ The Node Package Manager ([NPM](https://www.npmjs.com/get-npm)) is installed as 
 ```sh
 > npm start
 ```
-**4:** Open a browser and navigate to `http://localhost:8080` to view the deployed code. Note: If this does not work, there may be a conflict with other processes, so th `8080` port can be changed by [configuring the devServer](https://webpack.js.org/configuration/dev-server/).
+**4:** Open a browser and navigate to `http://localhost:8080` to view the deployed code. Note: If this does not work, there may be a conflict with other processes, so the `8080` port can be changed by [configuring the devServer](https://webpack.js.org/configuration/dev-server/).
