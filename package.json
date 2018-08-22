@@ -1,6 +1,6 @@
 {
   "name": "microdata-template",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "An implementation of HTML template by way of the microdata mechanism.",
   "keywords": [
     "javascript",
