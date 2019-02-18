@@ -1,6 +1,6 @@
 {
   "name": "microdata-template",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "An implementation of HTML template by way of the microdata mechanism.",
   "keywords": [
     "javascript",
@@ -10,6 +10,10 @@
   ],
   "bugs": "https://github.com/ptrdo/microdata-template/issues",
   "main": "lib/microdata-template.js",
+  "files": [
+    "lib/microdata-template.js",
+    "LICENSE.txt"
+  ],
   "repository": {
     "url": "https://github.com/ptrdo/microdata-template",
     "type": "git"
