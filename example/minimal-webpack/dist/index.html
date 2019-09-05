@@ -8,19 +8,47 @@
     body {
       font-family: sans-serif;
     }
-    table {
-      width: 25%;
-      margin: 2em auto;
+    section {
+      width: 25vw;
+      min-width: 360px;
+      height: 60vh;
+      min-height: 360px;
+      margin: 10vh auto 0;
+      overflow: auto;
       border: 1px solid silver;
+    }
+    table {
+      width: 100%;
+      margin: 0;
+      border-collapse: separate;
+      border-spacing: 3px;
     }
     table tr:nth-child(odd) {
       background-color: #f4f4f0;
+    }
+    table thead th {
+      line-height: 2;
+    }
+    table tbody tr:hover {
+      background-color: palegoldenrod;
     }
     table td {
       padding: 0.5em;
     }
     table td:nth-child(n+2) {
       text-align: right;
+    }
+    fieldset {
+      border: none;
+      width: 25vw;
+      min-width: 360px;
+      margin: 1em auto;
+      text-align: center;
+    }
+    fieldset input[type=button] {
+      width: 49%;
+      height: 2em;
+      font-variant: small-caps;
     }
   </style>
   <script src="bundle.js"></script>
@@ -48,6 +76,10 @@
           </tbody>
         </table>
       </section>
+      <fieldset>
+        <input type="button" value="empty" />
+        <input type="button" value="fill" />
+      </fieldset>
     </article>
   </main>
 </body>

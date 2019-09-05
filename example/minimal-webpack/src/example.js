@@ -14,6 +14,16 @@ class Example {
     } catch (error) {
       console.error("Example could not render!", error);
     }
+    document.querySelector("input[value=empty]")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      Templater.clear(template);
+    });
+    document.querySelector("input[value=fill]")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      Templater.render(template, data["StatePopulations"]);
+    });
   };
 }
 

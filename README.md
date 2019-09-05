@@ -1,5 +1,5 @@
 ###### This is released software. Please **[log issues](https://github.com/ptrdo/microdata-template/issues)** found. 
-# microdata-template `v2.1.0`
+# microdata-template `v2.1.1`
 An implementation of HTML template by way of the microdata mechanism.
 ### The Gist  
 This JavaScript module should simplify adding dynamic content to HTML documents while staying true to the recommendations of web standards. There are no dependencies here except the JavaScript [ECMA5 standard](http://www.ecma-international.org/ecma-262/5.1/) which enjoys [nearly universal support](http://kangax.github.io/compat-table/es5/) in modern browsers. Also, since the HTML recommendations for integral technologies such as [template](https://www.w3.org/TR/html52/semantics-scripting.html#the-template-element) and [microdata](https://www.w3.org/TR/microdata/) are variably implemented by modern browsers, this module serves as a [polyfill](https://en.wikipedia.org/wiki/Polyfill) to assure reliable results. Best of all, this methodology encourages the writing of low-dependency JavaScript and perfectly valid HTML &mdash; even within fully-functional templated markup.
@@ -118,7 +118,7 @@ export default Example;
 ```
 
 ***
-### The Whole Spiel
+### The Reasoning
 When displaying information in an HTML page, it sometimes makes sense for a script to loop over a set of data to extract its values and embed them into a repeatable pattern of markup. This sort of routine is what can easily populate the many rows and columns of a complex `<table>` of data, but is also convenient for rendering more pedestrian page elements like `<menu>` and `<select><option>` lists. Of course, this is nothing new and many JavaScript frameworks and libraries provide for exactly this sort of routine as core to their technology, but standard HTML provides for this as well with the `<template>` element. Even more, HTML has long-supported a special set of [microdata](https://www.w3.org/TR/microdata/) attributes designed to make such rendered information more comprehensible to the machine-reading done by search engine crawlers and the like. 
 
 The [HTML5 Recommendations](https://www.w3.org/TR/html52/semantics-scripting.html#the-template-element) designate the `<template>` element as a hidden node containing some fragment of markup. That markup is intended as the source structure for a script to clone and then customize and deposit elsewhere in the HTML document. An advantage of this technology is that HTML structures can be plainly constructed in manifest markup rather than assembled on-the-fly from within the logic of a script. This can be especially advantagous when the resulting assembly is deep or elaborate. The Mozilla Developer's Network has a concise explanation of [how to employ the standard template element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template).
@@ -128,3 +128,60 @@ The [HTML5 Recommendations](https://www.w3.org/TR/html52/semantics-scripting.htm
 **Regardless**, even when the `<template>` is used as intended, and even if the browser supports it, a considerable amount of scripted logic can be required to traverse the cloned structure and locate particular nodes of a certain heirarchy into which specific data should be deposited in a certain way. Essentially, the JavaScript must have an awareness of the templated markup, and what this means is that every change in markup structure necessitates a corresponding adjustment to the scripted routine. A solution for this is to prescribe *tokens* within the templated markup that the script can leverage as identity and location for which variable value to insert and where. This is the solution provided by popular templating libraries like [Mustache](https://mustache.github.io/), [Handlebars](http://handlebarsjs.com/), and [WebComponents](http://webcomponents.org/articles/introduction-to-template-element/).
 
 **However**, even though those libraries are awesome and have many useful features, using them can necessitate some departure from the true intent of the `<template>` methodology, lull the markup away from validity, and require JavaScript that adheres to somewhat esoteric methodology. Seemingly, the `<template>` specification has fallen so short of what HTML developers want and need that every JavaScript framework and library fills the void by employing its own ideas for what templating ought to be and then offers that as a core selling point. Which to choose? Maybe just the HTML standard. 
+
+***
+### The Template 
+The element targeted as a template does not need to be a `<template>` node. In fact, it is recommended that the targeted element be any standard HTML node with a parent designed to contain the repeated siblings. An obvious example would be an `<li>` node targeted as a template to dynamically populate the parent `<ul>` list, but it could be table cells within a table row, paragraphs within a section, or just about anything inside anything.
+
+Furthermore, the targeted element should be positioned within the DOM wherever it belongs on the page and within the markup. The targeted element will never be visible, only the repeated clones populated by the data.
+
+When addressing the targeted element for rendering by microdata-template, that element must have `itemscope` and `hidden` attributes. It is valid to add these to any HTML element. 
+```html
+<ul id="months">
+  <li itemscope hidden>{{ monthName }}</li>
+</ul>
+```
+The code will replicate the element with the `itemscope hidden` attributes, removing those two attributes from each clone (therefore making them visible). Therefore, per the markup above: 
+```javascript
+import templater from "./path/to/microdata-template.js";
+
+let itemToReplicate = document.querySelector("#months [itemscope][hidden]"); // the template
+
+templater.render(itemToReplicate, myData);
+```
+It would be consistent (and useful) to employ the other awesome attributes of the [microdata](https://www.w3.org/TR/microdata/) spec&mdash;`itemref`, `itemprop`, `itemid`, `itemtype`&mdash;but this is not necessary. 
+
+***
+### The Handlebars 
+The HTML markup should be valid, and within each element targeted as a template, the microdata-template will recognize a double-set of curly braces (aka "handlebars") as enclosing a key, index, or token which corresponds to the data being iterated over. There must be a space between these handlebars and the variable inside. For example, `{{ thisWorks }}` but `{{thisDoesNot}}`. 
+
+By default, the handlebars expect to populate the entire contents of an HTML node, `<span>{{ phrase }}</span>` or attribute value, `<ul itemid="{{ guid }}">`. However, the handlebars can be embedded within content with a special modifier, `<span>It is now {{ concat:hour }} o'clock</span>`.
+
+***
+### The Tokens
+The term (aka "token") appearing inside the handlebars will refer to the data at that iteration. When iterating over an array, this can be an index value (e/g `0` would use the first item found), or when iterating over a collection of objects, the token can be a key that contains the value to deposit into the markup. There are also reserved terms to deposit those abstract, `INDEX`, `KEY`, `VALUE`. Values not found will render an empty string. 
+
+Given the following data: 
+```javascript
+const data = [
+  { name: "Tweedledee", rattle: "red" }, 
+  { name: "Tweedledum", rattle: "blue" }
+];
+```
+And the following template: 
+```html
+
+```
+The result would be: 
+```html
+
+```
+
+***
+### The Modifiers
+
+***
+### Transformers
+
+***
+### Public API
