@@ -1,5 +1,5 @@
 ###### This is released software. Please **[log issues](https://github.com/ptrdo/microdata-template/issues)** found. 
-# microdata-template `v2.1.1`
+# microdata-template `v2.2.0`
 An implementation of HTML template by way of the microdata mechanism.
 ### The Gist  
 This JavaScript module should simplify adding dynamic content to HTML documents while staying true to the recommendations of web standards. There are no dependencies here except the JavaScript [ECMA5 standard](http://www.ecma-international.org/ecma-262/5.1/) which enjoys [nearly universal support](http://kangax.github.io/compat-table/es5/) in modern browsers. Also, since the HTML recommendations for integral technologies such as [template](https://www.w3.org/TR/html52/semantics-scripting.html#the-template-element) and [microdata](https://www.w3.org/TR/microdata/) are variably implemented by modern browsers, this module serves as a [polyfill](https://en.wikipedia.org/wiki/Polyfill) to assure reliable results. Best of all, this methodology encourages the writing of low-dependency JavaScript and perfectly valid HTML &mdash; even within fully-functional templated markup.
@@ -17,7 +17,7 @@ This JavaScript module should simplify adding dynamic content to HTML documents 
 </script>
 ```
 
-**2:** Write some HTML with a template element (or any node designated with both the `hidden` and `itemscope` attributes): 
+**2:** Write some HTML with a template element (any node designated with both the `hidden` and `itemscope` attributes): 
 ```html
 <nav>
   <menu id="example">
@@ -78,7 +78,7 @@ var templater = window.MicrodataTemplate.init();
 
 ***
 ### Advanced Usage
-This module is organized to be attached to an HTML document as a simple external script (see: [Simple Usage](https://github.com/ptrdo/microdata-template#simple-usage)), but also in a project governed by [Asynchronous Module Definition](https://en.wikipedia.org/wiki/Asynchronous_module_definition) (AMD) with a library such as [RequireJS](https://github.com/requirejs/requirejs), or an [ES6-compliant](http://es6-features.org/) project bundled by a library such as [Webpack](https://webpack.js.org/). The expectations are the same, but the syntax used to load, instantiate, and then address the module may be slightly different depending on circumstance.
+This module is organized to be attached to an HTML document as a simple external script (see: [Simple Usage](#simple-usage)), but also in a project governed by [Asynchronous Module Definition](https://en.wikipedia.org/wiki/Asynchronous_module_definition) (AMD) with a library such as [RequireJS](https://github.com/requirejs/requirejs), or an [ES6-compliant](http://es6-features.org/) project bundled by a library such as [Webpack](https://webpack.js.org/). The expectations are the same, but the syntax used to load, instantiate, and then address the module may be slightly different depending on circumstance.
 
 **Old-fashioned AMD (RequireJS) Implementation:**
 ```javascript
@@ -131,54 +131,87 @@ The [HTML5 Recommendations](https://www.w3.org/TR/html52/semantics-scripting.htm
 
 ***
 ### The Template 
-The element targeted as a template does not need to be a `<template>` node. In fact, it is recommended that the targeted element be any standard HTML node with a parent designed to contain the repeated siblings. An obvious example would be an `<li>` node targeted as a template to dynamically populate the parent `<ul>` list, but it could be table cells within a table row, paragraphs within a section, or just about anything inside anything.
+The element targeted as a template does not need to be a `<template>` node. In fact, it is recommended that the targeted element be any standard HTML node with a parent designed to contain the repeated siblings of the templated element. An obvious example would be an `<li>` node targeted as a template to dynamically populate the parent `<ul>` list, but it could also be table cells within a table row, table rows within a table body, paragraphs within a section, or just about anything inside anything.
 
 Furthermore, the targeted element should be positioned within the DOM wherever it belongs on the page and within the markup. The targeted element will never be visible, only the repeated clones populated by the data.
 
-When addressing the targeted element for rendering by microdata-template, that element must have `itemscope` and `hidden` attributes. It is valid to add these to any HTML element. 
+When authoring HTML markup for rendering by microdata-template, the templating element must have a `hidden` attribute PLUS a microdata attribute such as `itemscope`, `itemprop`, and/or `itemid`. It is valid to add these to any HTML element. Other attributes of the [microdata specification](https://www.w3.org/TR/microdata/) can be employed, but are not required. Therefore:
+
 ```html
-<ul id="months">
-  <li itemscope hidden>{{ monthName }}</li>
+<ul id="months" itemscope>
+  <li itemprop="month" hidden>{{ monthName }}</li>
 </ul>
 ```
-The code will replicate the element with the `itemscope hidden` attributes, removing those two attributes from each clone (therefore making them visible). Therefore, per the markup above: 
+Per this example (above), the code will replicate the element with the `itemprop hidden` attributes, removing those two attributes from each clone (therefore making them visible). If it is more convenient to address the parent element (for instance, if the parent has a readily available `id` attribute), the parent can be passed to the `render(ele,data)` method, which then finds the first valid templatable element to render. Therefore, per the markup above: 
 ```javascript
 import templater from "./path/to/microdata-template.js";
 
-let itemToReplicate = document.querySelector("#months [itemscope][hidden]"); // the template
+let itemToReplicate = document.querySelector("[itemprop][hidden]"); // the template
+let parentOfClones = document.getElementById("months"); // the parent of the template
 
-templater.render(itemToReplicate, myData);
+templater.render(itemToReplicate||parentOfClones, myData); // either works!
 ```
-It would be consistent (and useful) to employ the other awesome attributes of the [microdata](https://www.w3.org/TR/microdata/) spec&mdash;`itemref`, `itemprop`, `itemid`, `itemtype`&mdash;but this is not necessary. 
+
+>**NOTE:** The [microdata specification](https://www.w3.org/TR/microdata/) requires an element with an `itemscope` attribute to also have either an `itemref` or `itemtype` attribute, but this rule is not enforced here. 
 
 ***
 ### The Handlebars 
-The HTML markup should be valid, and within each element targeted as a template, the microdata-template will recognize a double-set of curly braces (aka "handlebars") as enclosing a key, index, or token which corresponds to the data being iterated over. There must be a space between these handlebars and the variable inside. For example, `{{ thisWorks }}` but `{{thisDoesNot}}`. 
+The HTML markup should be valid, and within each element targeted as a template, the microdata-template will recognize a double-set of curly braces (aka *handlebars*) as enclosing a key, index, or token which corresponds to the data being iterated over. There must be a space between these handlebars and the variable inside. For example, `{{ thisWorks }}` but `{{thisDoesNot}}`. 
 
-By default, the handlebars expect to populate the entire contents of an HTML node, `<span>{{ phrase }}</span>` or attribute value, `<ul itemid="{{ guid }}">`. However, the handlebars can be embedded within content with a special modifier, `<span>It is now {{ concat:hour }} o'clock</span>`.
+By default, the handlebars expect to populate the entire contents of an HTML node, `<span>{{ phrase }}</span>` or attribute value, `<ul itemid="{{ guid }}">`. However, the handlebars can be embedded within content with a special *concat* modifier, `<span>It is now {{ concat:hour }} o'clock</span>`. See more about [modifiers](#the-modifiers) below.
 
 ***
 ### The Tokens
-The term (aka "token") appearing inside the handlebars will refer to the data at that iteration. When iterating over an array, this can be an index value (e/g `0` would use the first item found), or when iterating over a collection of objects, the token can be a key that contains the value to deposit into the markup. There are also reserved terms to deposit those abstract, `INDEX`, `KEY`, `VALUE`. Values not found will render an empty string. 
+The term appearing inside the handlebars (aka *token*) will refer to the data at that iteration. When iterating over an array, this can be an index value (e/g `{{ 0 }}` would insert the first item found in the array), or when iterating over a collection of objects, the token can be a key that contains the value to deposit into the markup. There are also reserved terms to deposit the abstract, `INDEX`, `KEY`, `VALUE`. Values not found will render an empty string. 
 
 Given the following data: 
 ```javascript
 const data = [
-  { name: "Tweedledee", rattle: "red" }, 
-  { name: "Tweedledum", rattle: "blue" }
+  { party: "Republican", candidate: "Ellie Elephant", color: "red" },
+  { party: "Democrat", candidate: "Dora Donkey", color: "cornflowerblue" }
 ];
 ```
 And the following template: 
 ```html
-
+<table>
+  <tr bgcolor="{{ color }}" itemscope hidden>
+    <td><input type="radio" name="vote" value="{{ INDEX }}"/></td>
+    <td>{{ candidate }}</td>
+    <td>{{ party }}</td>
+  </tr>
+</table>
 ```
-The result would be: 
+The resulting markup would be: 
 ```html
-
+<table>
+  <tr bgcolor="{{ color }}" itemscope hidden>
+    <td><input type="radio" name="vote" value="{{ INDEX }}"/></td>
+    <td>{{ candidate }}</td>
+    <td>{{ party }}</td>
+  </tr>
+  <tr bgcolor="red">
+    <td><input type="radio" name="vote" value="0"/></td>
+    <td>Ellie Elephant</td>
+    <td>Republican</td>
+  </tr>
+  <tr bgcolor="cornflowerblue">
+    <td><input type="radio" name="vote" value="1"/></td>
+    <td>Dora Donkey</td>
+    <td>Democrat</td>
+  </tr>
+</table>
 ```
 
 ***
 ### The Modifiers
+By default, the value inserted for a token will be applied as the nodeValue of the tag or the literal value of the attribute. However, there are instances when the insertion should be treated differently. Modifiers are reserved keywords that can precede a token to prescribe special treatment. 
+
+| Modifer | Usage | Description |
+|----------|-----------|---------|
+| html | {{ html:value }} |  Insert value with innerHTML rather than nodeValue (e.g. escaped content, unicodes, html entities). |
+| concat | {{ concat:value }} | Concatenates value in-context to any adjacent content within the targeted attribute or node. |
+| forin | {{ forin:value }} | Iterates over every property found in the assumed object (see [object](/example/simple-javascript/object.html) example). |
+| boolean | {{ boolean:value }} | Inserts boolean per resolved truthiness of value (e.g. *checked="false"*, *disabled="true"*). |
 
 ***
 ### Transformers
