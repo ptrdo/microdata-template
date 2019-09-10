@@ -208,13 +208,24 @@ By default, the value inserted for a token will be applied as the nodeValue of t
 
 | Modifer | Usage | Description |
 |----------|-----------|---------|
-| html | {{ html:value }} |  Insert value with innerHTML rather than nodeValue (e.g. escaped content, unicodes, html entities). |
-| concat | {{ concat:value }} | Concatenates value in-context to any adjacent content within the targeted attribute or node. |
-| forin | {{ forin:value }} | Iterates over every property found in the assumed object (see [object](/example/simple-javascript/object.html) example). |
-| boolean | {{ boolean:value }} | Inserts boolean per resolved truthiness of value (e.g. *checked="false"*, *disabled="true"*). |
+| html | `{{ html:token }}` |  Insert value with innerHTML rather than nodeValue (e.g. escaped content, unicodes, html entities). |
+| concat | `{{ concat:token }}` | Concatenates value in-context to any adjacent content within the targeted attribute or node. |
+| forin | `{{ forin:token }}` | Iterates over every property found in the assumed object (see [object](/example/simple-javascript/object.html) example). |
+| boolean | `{{ boolean:token }}` | Inserts boolean per resolved truthiness of value (e.g. *checked="false"*, *disabled="true"*, *class="true"*). |
 
 ***
 ### Transformers
+Transformers allow for modification of a value prior to insertion into the targeted location. This allows for performing logic on the data without embedding logic into the markup. The transformer function receive two arguments: the value and the index of the current iteration.
+
+| Transformer | Usage | Description |
+|----------|-----------|---------|
+| join | `{{ join:token }}` |  Inserts comma-delineated string concatenating an assumed array of values. |
+| toLocaleString | `{{ toLocaleString:token }}` |  Inserts commas into large numbers (e.g. 1234567.890 becomes 1,234,567.89). |
+| parseDateToTimeValue | `{{ parseDateToTimeValue:token }}` |  Inserts a time value parsed from an assumed standard date string. |
+| toMebibytes | `{{ toMebibytes:token }}` |  Converts bytes to mebibytes. (e.g. 1048576 becomes "1.00"). |
+| exists | `{{ exists:token }}` |  Inserts `true` or `false` if value exists (e.g. as a CSS class name to denote visibility). |
+| absent | `{{ absent:token }}` |  Inserts `true` or `false` if value does not exist (the obverse of `exists`). |
+| combineString | `{{ combineString:('foo',token1,'bar',token2,…) }}` | Combines arbitrary strings and/or token values (e.g. to construct an URL). |
 
 ***
 ### Public API
