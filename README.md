@@ -202,9 +202,14 @@ The resulting markup would be:
 </table>
 ```
 
-**OR Alternatives:** If it is not certain that a token will resolve or exist, alternatives can be supplied, separated by a pipe `|` character. These will by tried from left-to-right until a key resolves. If none resolve, then an empty string results.
+**OR Alternatives:** If it is not certain that a token will resolve or exist, alternatives can be supplied, separated by a pipe `|` character. These will by tried from left-to-right until a key resolves. If none resolve, then an empty string results. Or, if a string is provided as the final alternative, it will be inserted. **NOTE:** OR Alternatives will *not* work within a [combineString transformer](#transformers).
 ```html
-<samp>{{ tryThis|thenThis|default }}</samp>
+<samp>{{ tryThis|thenThis|"Default text" }}</samp>
+```
+
+**OBJECT Notation:** Tokens can be JavaScript-compliant Object dot.notation or braced[addressing]. These can be used exactly as a simple token would be used, including in OR Alternatives.
+```html
+<samp>{{ tryThis.value|thenThis[value]|"Not Found!" }}</samp>
 ```
 
 ***
@@ -232,5 +237,39 @@ Transformers allow for modification of a value prior to insertion into the targe
 | absent | `{{ absent:token }}` |  Inserts `true` or `false` if value does not exist (the obverse of `exists`). |
 | combineString | `{{ combineString:('foo',token1,'bar',token2,…) }}` | Combines arbitrary strings and/or token values (e.g. to construct an URL). See the [transformer](/example/simple-javascript/transformer.html) example.  |
 
+At runtime, custom transformers can be supplied to the microdata-template instance for immediate use within templated markup: 
+```javascript
+import templater from "./path/to/microdata-template.js";
+
+templater.setTransformer("formatDate", function(value, index) {
+  var time = Date.parse(value);
+  var date = new Date(isNaN(time) ? isNaN(value) ? Date.now() : value : time);
+  return date.toLocaleString();
+});
+
+// then: <samp>{{ formatDate:myData.creationDate }}</samp>
+```
+
 ***
 ### Public API
+Once instantiated in the web client code, the microdata-template can be addressed via a variety of public methods, getters, and setters. These methods can be addressed within the scope of the instantiation, or via the browser's JavaScript console.
+```javascript
+// In pre-ES6 implementations, the code is exposed to the global namespace: 
+var templater = window.MicrodataTemplate.init();
+templater.getVerson(); // returns current version, e.g. "2.2.0"
+
+// In ES6 implementations, the import code does not require init() 
+import templater from "./path/to/microdata-template.js";
+templater.getVersion(); // returns current version, e.g. "2.2.0" 
+
+```
+
+| Method Name | Argument(s) | Description |
+|-------------|-------------|-------------|
+| `init` | *none* | Returns an instance of the microdata-template. |
+| `render` | *element, data* | Populates the HTML element template with data. |
+| `clear` | *element, callback* | Removes dynamically populated content, retaining template. |
+| `refresh` | *element, data* | Makes current a previously rendered template. |
+| `setTransformer` | *name, func* | Provides for a custom transformer. | 
+| `getTransformers` | *none* | Returns default and custom transformers. |
+| `getVersion` | *none* | Returns the current version. | 

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Microdata Template: Example: Transformers</title>
+  <link rel="icon" href="data:,">
   <script src="../../lib/microdata-template.js" crossorigin="anonymous"></script>
   <style>
     body {
@@ -54,8 +55,8 @@
   <article>
     <section>
       <blockquote itemscope itemid="{{ id }}" itemtype="https://schema.org/UserTweets" hidden>
-        <h5 itemprop="tweet"><a href="{{ combineString:('http://twitter.com/', user.screen_name, '/status/', id) }}">{{ concat:combineString:("@", user.screen_name, " tweeted from ", user.location) }}:</a></h5>
-        <p itemprop="text">{{ text }}</p>
+        <h5 itemprop="tweet"><a href="{{ combineString:('http://twitter.com/', user.screen_name, '/status/', id) }}">{{ concat:combineString:("@", user[screen_name], " tweeted from ", user.location) }}:</a></h5>
+        <p itemprop="text">{{ tryThis|tryThat|text|"Sorry, that tweet wasn't found!" }}</p>
         <time itemprop="created_at" datetime="{{ parseDateToTimeValue:created_at }}">{{ formatDate:created_at }}</time>
       </blockquote>
     </section>
