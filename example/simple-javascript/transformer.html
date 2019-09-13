@@ -34,6 +34,18 @@
       width: 100%;
       text-align: right;
       font-size: smaller;
+      color: lightsteelblue;
+    }
+    a {
+      color: #0776A2;
+      border-bottom: 1px solid lightsteelblue;
+      text-decoration: none;
+    }
+    a:visited {
+      color: lightsteelblue;
+    }
+    blockquote:hover a {
+      color: #0776A2;
     }
   </style>
 </head>
@@ -42,7 +54,7 @@
   <article>
     <section>
       <blockquote itemscope itemid="{{ id }}" itemtype="https://schema.org/UserTweets" hidden>
-        <h5 itemprop="screen_name">{{ concat:combineString:("@", user.screen_name, " tweeted from ", user.location) }}:</h5>
+        <h5 itemprop="tweet"><a href="{{ combineString:('http://twitter.com/', user.screen_name, '/status/', id) }}">{{ concat:combineString:("@", user.screen_name, " tweeted from ", user.location) }}:</a></h5>
         <p itemprop="text">{{ text }}</p>
         <time itemprop="created_at" datetime="{{ parseDateToTimeValue:created_at }}">{{ formatDate:created_at }}</time>
       </blockquote>

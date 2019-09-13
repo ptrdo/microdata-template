@@ -202,6 +202,11 @@ The resulting markup would be:
 </table>
 ```
 
+**OR Alternatives:** If it is not certain that a token will resolve or exist, alternatives can be supplied, separated by a pipe `|` character. These will by tried from left-to-right until a key resolves. If none resolve, then an empty string results.
+```html
+<samp>{{ tryThis|thenThis|default }}</samp>
+```
+
 ***
 ### The Modifiers
 By default, the value inserted for a token will be applied as the nodeValue of the tag or the literal value of the attribute. However, there are instances when the insertion should be treated differently. Modifiers are reserved keywords that can precede a token to prescribe special treatment. 
@@ -210,7 +215,7 @@ By default, the value inserted for a token will be applied as the nodeValue of t
 |----------|-----------|---------|
 | html | `{{ html:token }}` |  Insert value with innerHTML rather than nodeValue (e.g. escaped content, unicodes, html entities). |
 | concat | `{{ concat:token }}` | Concatenates value in-context to any adjacent content within the targeted attribute or node. |
-| forin | `{{ forin:token }}` | Iterates over every property found in the assumed object (see [object](/example/simple-javascript/object.html) example). |
+| forin | `{{ forin:token }}` | Iterates over every property found in the assumed object. See the [object](/example/simple-javascript/object.html) example. |
 | boolean | `{{ boolean:token }}` | Inserts boolean per resolved truthiness of value (e.g. *checked="false"*, *disabled="true"*, *class="true"*). |
 
 ***
@@ -225,7 +230,7 @@ Transformers allow for modification of a value prior to insertion into the targe
 | toMebibytes | `{{ toMebibytes:token }}` |  Converts bytes to mebibytes. (e.g. 1048576 becomes "1.00"). |
 | exists | `{{ exists:token }}` |  Inserts `true` or `false` if value exists (e.g. as a CSS class name to denote visibility). |
 | absent | `{{ absent:token }}` |  Inserts `true` or `false` if value does not exist (the obverse of `exists`). |
-| combineString | `{{ combineString:('foo',token1,'bar',token2,…) }}` | Combines arbitrary strings and/or token values (e.g. to construct an URL). |
+| combineString | `{{ combineString:('foo',token1,'bar',token2,…) }}` | Combines arbitrary strings and/or token values (e.g. to construct an URL). See the [transformer](/example/simple-javascript/transformer.html) example.  |
 
 ***
 ### Public API
