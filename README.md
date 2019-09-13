@@ -223,6 +223,10 @@ By default, the value inserted for a token will be applied as the nodeValue of t
 | forin | `{{ forin:token }}` | Iterates over every property found in the assumed object. See the [object](/example/simple-javascript/object.html) example. |
 | boolean | `{{ boolean:token }}` | Inserts boolean per resolved truthiness of value (e.g. *checked="false"*, *disabled="true"*, *class="true"*). |
 
+Modifiers can be applied on top of Transformers: 
+```html
+<samp>The national debt is ${{ concat:toLocaleString:debt }}.</samp>
+```
 ***
 ### Transformers
 Transformers allow for modification of a value prior to insertion into the targeted location. This allows for performing logic on the data without embedding logic into the markup. The transformer function receive two arguments: the value and the index of the current iteration.
@@ -268,7 +272,7 @@ templater.getVersion(); // returns current version, e.g. "2.2.0"
 |-------------|-------------|-------------|
 | `init` | *none* | Returns an instance of the microdata-template. |
 | `render` | *element, data* | Populates the HTML element template with data. |
-| `clear` | *element, callback* | Removes dynamically populated content, retaining template. |
+| `clear` | *element, callback* | Removes dynamically populated content, retaining the original template. |
 | `refresh` | *element, data* | Makes current a previously rendered template. |
 | `setTransformer` | *name, func* | Provides for a custom transformer. | 
 | `getTransformers` | *none* | Returns default and custom transformers. |
