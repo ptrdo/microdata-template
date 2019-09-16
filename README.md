@@ -147,9 +147,9 @@ Per this example (above), the code will replicate the element with the `itemprop
 import templater from "./path/to/microdata-template.js";
 
 let itemToReplicate = document.querySelector("[itemprop][hidden]"); // the template
-let parentOfClones = document.getElementById("months"); // the parent of the template
+let parentOfClones = document.getElementById("months"); // the parent of the template works when strictStandards: true;
 
-templater.render(itemToReplicate||parentOfClones, myData); // either works when strictStandards = true;
+templater.render(itemToReplicate||parentOfClones, myData); // either works when strictStandards: true;
 ```
 
 >**NOTE:** The [microdata specification](https://www.w3.org/TR/microdata/) requires an element with an `itemscope` attribute to also have either an `itemref` or `itemtype` attribute, but this rule is not enforced here. 
