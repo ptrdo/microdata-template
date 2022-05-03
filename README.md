@@ -1,5 +1,5 @@
 ###### This is released software. Please **[log issues](https://github.com/ptrdo/microdata-template/issues)** found. 
-# microdata-template `v2.3.0`
+# microdata-template `v2.2.2`
 An implementation of HTML template by way of the microdata mechanism.
 ### The Gist  
 This JavaScript module should simplify adding dynamic content to HTML documents while staying true to the recommendations of web standards. There are no dependencies here except the JavaScript [ECMA5 standard](http://www.ecma-international.org/ecma-262/5.1/) which enjoys [nearly universal support](http://kangax.github.io/compat-table/es5/) in modern browsers. Also, since the HTML recommendations for integral technologies such as [template](https://www.w3.org/TR/html52/semantics-scripting.html#the-template-element) and [microdata](https://www.w3.org/TR/microdata/) are variably implemented by modern browsers, this module serves as a [polyfill](https://en.wikipedia.org/wiki/Polyfill) to assure reliable results. Best of all, this methodology encourages the writing of low-dependency JavaScript and perfectly valid HTML &mdash; even within fully-functional templated markup.
@@ -260,11 +260,11 @@ Once instantiated in the web client code, the microdata-template can be addresse
 ```javascript
 // In pre-ES6 implementations, the code is exposed to the global namespace: 
 var templater = window.MicrodataTemplate.init();
-templater.getVerson(); // returns current version, e.g. "2.3.0"
+templater.getVerson(); // returns current version, e.g. "2.2.2"
 
 // In ES6 implementations, the import code does not require init() 
 import templater from "./path/to/microdata-template.js";
-templater.getVersion(); // returns current version, e.g. "2.3.0"
+templater.getVersion(); // returns current version, e.g. "2.2.2"
 
 // Defaults are assumed, but configuration can be passed to init: 
 templater.init({
