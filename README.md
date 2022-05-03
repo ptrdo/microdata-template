@@ -260,27 +260,29 @@ Once instantiated in the web client code, the microdata-template can be addresse
 ```javascript
 // In pre-ES6 implementations, the code is exposed to the global namespace: 
 var templater = window.MicrodataTemplate.init();
-templater.getVerson(); // returns current version, e.g. "2.2.2"
+templater.getVerson(); // returns current version, e.g. "2.3.0"
 
 // In ES6 implementations, the import code does not require init() 
 import templater from "./path/to/microdata-template.js";
-templater.getVersion(); // returns current version, e.g. "2.2.2"
+templater.getVersion(); // returns current version, e.g. "2.3.0"
 
 // Defaults are assumed, but configuration can be passed to init: 
 templater.init({
   showHeritage: true, // bypass obj.hasOwnProperty() filtering.
-  strictStandard: true // require Microdata attributes.
+  strictStandard: true, // require Microdata attributes.
+  stripByteOrderMark: false // leave HTML unperturbed.
 });
 ```
 
-| Method Name | Argument(s) | Description |
-|-------------|-------------|-------------|
+| Method Name | Argument(s) | Description                                                               |
+|-------------|-------------|---------------------------------------------------------------------------|
 | `init` | *Object (optional)* | Returns an instance of the microdata-template. Config object is optional. |
-| `render` | *element, data* | Populates the HTML element template with data. |
-| `clear` | *element, callback* | Removes dynamically populated content, retaining the original template. |
-| `refresh` | *element, data* | Makes current a previously rendered template. |
-| `getSetShowHeritage` | *Boolean* | False by default. When true, bypasses obj.hasOwnProperty() filtering. |
-| `getSetStrictStandard` | *Boolean* | False by default. When true, Microdata attributes are always required. |
-| `setTransformer` | *name, func* | Provides for a custom transformer. | 
-| `getTransformers` | *none* | Returns default and custom transformers. |
-| `getVersion` | *none* | Returns the current version. | 
+| `render` | *element, data* | Populates the HTML element template with data.                            |
+| `clear` | *element, callback* | Removes dynamically populated content, retaining the original template.   |
+| `refresh` | *element, data* | Makes current a previously rendered template.                             |
+| `getSetShowHeritage` | *Boolean* | False by default. When true, bypasses obj.hasOwnProperty() filtering.     |
+| `getSetStrictStandard` | *Boolean* | False by default. When true, Microdata attributes are always required.    |
+| `getSetStripByteOrderMark` | *Boolean* | True by default. When true, strips Byte Order Mark from incoming HTML snippets.     |
+| `setTransformer` | *name, func* | Provides for a custom transformer.                                        | 
+| `getTransformers` | *none* | Returns default and custom transformers.                                  |
+| `getVersion` | *none* | Returns the current version.                                              | 
